@@ -23,7 +23,7 @@ class WebSocketSimulation extends Simulation with TestConfig {
     .exec(ws("Connect WS").connect(s"$wsUrl/ws/connect/"+"${deviceId}")
       .await(10 seconds)(
         ws.checkTextMessage("greetingMessage")
-          .matching(jsonPath("$.kind").is("ConnectionBegin")))
+          .matching(jsonPath("$.kindulimt").is("ConnectionBegin")))
       /*.await(5 seconds)(
         ws.checkTextMessage("availabilityMessage")
           .matching(jsonPath("$.kind").is("ConnectionReady")))
@@ -36,7 +36,7 @@ class WebSocketSimulation extends Simulation with TestConfig {
 
   setUp(scn.inject(
     nothingFor(1 seconds),
-    constantUsersPerSec(500) during (250 seconds),
+    constantUsersPerSec(50) during (250 seconds),
     nothingFor(10 seconds)
   ).protocols(httpProtocol))
     .maxDuration(550 seconds)
