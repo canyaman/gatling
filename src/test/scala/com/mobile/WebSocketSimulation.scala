@@ -36,7 +36,7 @@ class WebSocketSimulation extends Simulation with TestConfig {
 
   setUp(scn.inject(
     nothingFor(1 seconds),
-    constantUsersPerSec(100) during (25 seconds),
+    constantUsersPerSec(500) during (25 seconds),
     nothingFor(10 seconds)
   ).protocols(httpProtocol))
     .maxDuration(55 seconds)
