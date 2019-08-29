@@ -30,14 +30,14 @@ class WebSocketSimulation extends Simulation with TestConfig {
       .await(5 seconds)(
         ws.checkTextMessage("statusMessage")
           .matching(jsonPath("$.kind").is("ConnectionStatus")))*/
-    ).pause(250 seconds)
+    ).pause(30 seconds)
     .exec(ws("Close WS").close)
 
 
   setUp(scn.inject(
     nothingFor(1 seconds),
-    constantUsersPerSec(50) during (250 seconds),
+    constantUsersPerSec(5) during (5 seconds),
     nothingFor(10 seconds)
   ).protocols(httpProtocol))
-    .maxDuration(550 seconds)
+    .maxDuration(55 seconds)
 }
