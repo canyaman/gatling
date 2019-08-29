@@ -23,7 +23,7 @@ class WebSocketSimulation extends Simulation with TestConfig {
     .exec(ws("Connect WS").connect(s"$wsUrl/ws/connect/"+"${deviceId}")
       .await(10 seconds)(
         ws.checkTextMessage("greetingMessage")
-          .matching(jsonPath("$.kindulimt").is("ConnectionBegin")))
+          .matching(jsonPath("$.kind").is("ConnectionBegin")))
       /*.await(5 seconds)(
         ws.checkTextMessage("availabilityMessage")
           .matching(jsonPath("$.kind").is("ConnectionReady")))
