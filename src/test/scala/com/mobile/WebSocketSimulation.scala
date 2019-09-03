@@ -9,6 +9,9 @@ import scala.concurrent.duration._
 
 class WebSocketSimulation extends Simulation with TestConfig {
 
+  val rampUp = 50
+  val duration = 200 seconds
+
   val httpProtocol = http
     .baseUrl(s"$baseUrl") // Here is the root for all relative URLs
     .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8") // Here are the common headers
@@ -21,7 +24,7 @@ class WebSocketSimulation extends Simulation with TestConfig {
   val scn = scenario("WebSocket Connection Scenario") // A scenario is a chain of requests and pauses
     .feed(randomDeviceId)
     .exec(ws("Connect WS").connect(s"$wsUrl/ws/connect/"+"${deviceId}")
-      .await(10 seconds)(
+      .await(5 seconds)(
         ws.checkTextMessage("greetingMessage")
           .matching(jsonPath("$.kind").is("ConnectionBegin")))
       /*.await(5 seconds)(
@@ -29,15 +32,15 @@ class WebSocketSimulation extends Simulation with TestConfig {
           .matching(jsonPath("$.kind").is("ConnectionReady")))
       .await(5 seconds)(
         ws.checkTextMessage("statusMessage")
-          .matching(jsonPath("$.kind").is("ConnectionStatus")))*/
-    ).pause(30 seconds)
+          .matching(jssonPath("$.kind").is("ConnectionStatus")))*/
+    ).pause(duration+5)
     .exec(ws("Close WS").close)
 
 
   setUp(scn.inject(
-    nothingFor(1 seconds),
-    constantUsersPerSec(200) during (25 seconds),
-    nothingFor(10 seconds)
+    nothingFor(5 seconds),
+    constantUsersPerSec(rampUp) during (duration),
+    nothingFor(30 seconds)
   ).protocols(httpProtocol))
-    .maxDuration(55 seconds)
+    .maxDuration(5+duration*2+5+30+1)
 }
