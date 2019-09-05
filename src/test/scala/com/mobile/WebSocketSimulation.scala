@@ -9,7 +9,7 @@ import scala.concurrent.duration._
 
 class WebSocketSimulation extends Simulation with TestConfig {
 
-  val rampUp = 200
+  val rampUp = 50
   val duration = 200 seconds
 
   val httpProtocol = http
