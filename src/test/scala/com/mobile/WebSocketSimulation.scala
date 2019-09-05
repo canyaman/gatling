@@ -10,7 +10,7 @@ import scala.concurrent.duration._
 class WebSocketSimulation extends Simulation with TestConfig {
 
   val rampUp = 200
-  val duration = 120 seconds
+  val duration = 200 seconds
 
   val httpProtocol = http
     .baseUrl(s"$baseUrl") // Here is the root for all relative URLs
