@@ -9,8 +9,6 @@ import scala.concurrent.duration._
 
 class WebSocketSimulation extends Simulation with TestConfig {
 
-  val rampUp = 15
-  val duration = 200 seconds
 
   val httpProtocol = http
     .baseUrl(s"$baseUrl") // Here is the root for all relative URLs
@@ -33,14 +31,14 @@ class WebSocketSimulation extends Simulation with TestConfig {
       .await(5 seconds)(
         ws.checkTextMessage("statusMessage")
           .matching(jssonPath("$.kind").is("ConnectionStatus")))*/
-    ).pause(duration+5)
+    ).pause(duration.getSeconds+5 seconds)
     .exec(ws("Close WS").close)
 
 
   setUp(scn.inject(
     nothingFor(5 seconds),
-    constantUsersPerSec(rampUp) during (duration),
+    constantUsersPerSec(user) during (duration.getSeconds seconds),
     nothingFor(30 seconds)
   ).protocols(httpProtocol))
-    .maxDuration(5+duration*2+5+30+1)
+    .maxDuration(5+duration.getSeconds*2+5+30+1 seconds)
 }

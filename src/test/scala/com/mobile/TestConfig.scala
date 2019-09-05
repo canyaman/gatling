@@ -7,4 +7,6 @@ trait TestConfig{
 
   val baseUrl = testConfig.getString("test.url")
   val wsUrl = testConfig.getString("test.ws")
+  val duration = testConfig.getDuration("test.duration")
+  val user = testConfig.getInt("test.user")
 }
