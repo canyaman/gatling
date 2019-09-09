@@ -1,4 +1,5 @@
-enablePlugins(GatlingPlugin, FrontLinePlugin)
+enablePlugins(GatlingPlugin)
+enablePlugins(AssemblyPlugin)
 
 scalaVersion := "2.12.8"
 scalacOptions := Seq(
@@ -14,3 +15,15 @@ libraryDependencies += "com.typesafe" % "config" % "1.3.4" % "test"
 val gatlingJavaOptions = Seq("-XX:-MaxFDLimit")
 
 javaOptions ++= gatlingJavaOptions
+
+fullClasspath in assembly := (fullClasspath in Gatling).value
+mainClass in assembly := Some("io.gatling.app.Gatling")
+assemblyMergeStrategy in assembly := {
+  case path if path.endsWith("io.netty.versions.properties") => MergeStrategy.first
+  case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+  case path => {
+    val currentStrategy = (assemblyMergeStrategy in assembly).value
+    currentStrategy(path)
+  }
+}
+test in assembly := {}
